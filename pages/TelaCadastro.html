@@ -2,22 +2,55 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastro</title>
 </head>
 <body>
     <div>
         <h1>Cadastro</h1>
-        <form action="TelaLogin.html" method="post">
-            <label for="username">Nome de Usuário:</label>
-            <input type="text" id="username" name="username" required><br><br>
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required><br><br>
-            <label for="password">Senha:</label>
-            <input type="password" id="password" name="password" required><br><br>
-            <input type="submit" value="Cadastrar">
+        <form id="cadastroForm" action="/cadastro" method="POST">
+            <div class="form-group">
+                <label for="username">Nome:</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Senha:</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <button type="submit" class="submit-btn" id="cadastrar">Cadastrar</button>
         </form>
         <p>Já tem uma conta? <a href="TelaLogin.html">Faça login</a></p>
     </div>
 </body>
+<script>
+    const form = document.getElementById('cadastroForm');
+    form.addEventListener('submit', async (event) => {
+        event.preventDefault(); // Impede o envio padrão do formulário
+
+        const formData = new FormData(form);
+        const data = Object.fromEntries(formData.entries());
+
+        try {
+            const response = await fetch('/cadastro', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data),
+            });
+
+            const result = await response.json();
+            if (result.success) {
+                alert(result.message); // Exibe mensagem de sucesso
+            } else {
+                alert(result.message); // Exibe mensagem de erro
+            }
+        } catch (error) {
+            console.error('Erro ao enviar o formulário:', error);
+            alert('Erro ao cadastrar. Tente novamente.');
+        }
+    });
+</script>
 </html>
