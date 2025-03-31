@@ -41,15 +41,21 @@ db.connect((err) => {
 app.post('/api/login', (req, res) => {
     const { username, password } = req.body;
 
-    console.log('Dados recebidos:', req.body); // Log para depuração
+    console.log('Dados recebidos no login:', req.body); // Log para depuração
 
-    const user = users.find(u => u.username === username && u.password === password);
+    const sql = 'SELECT * FROM users WHERE username = ? AND password = ?';
+    db.query(sql, [username, password], (err, results) => {
+        if (err) {
+            console.error('Erro ao consultar o banco de dados:', err);
+            return res.status(500).json({ success: false, message: 'Erro no servidor. Tente novamente mais tarde.' });
+        }
 
-    if (user) {
-        res.json({ success: true }); // Retorna sucesso
-    } else {
-        res.json({ success: false }); // Retorna falha
-    }
+        if (results.length > 0) {
+            res.json({ success: true, message: 'Login realizado com sucesso!' });
+        } else {
+            res.json({ success: false, message: 'Usuário ou senha inválidos!' });
+        }
+    });
 });
 
 // Rota do cadastro
