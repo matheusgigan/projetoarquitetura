@@ -35,7 +35,6 @@ app.post('/api/login', (req, res) => {
     }
 });
 
-
 app.get('/cadastro', (req, res) => {
     res.sendFile(path.join(__dirname, '../pages/TelaCadastro.html'));
 }
@@ -48,8 +47,6 @@ app.get('/CriarRotina', (req, res) => {
 app.get('/MinhasRotinas', (req, res) => {
     res.sendFile(path.join(__dirname, '../pages/MinhasRotinas.html'));
 });
-  
-  
 
 // Inicia o servidor
 app.listen(PORT, () => {
