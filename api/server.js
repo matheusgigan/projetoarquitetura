@@ -35,7 +35,6 @@ app.post('/api/login', (req, res) => {
     }
 });
 
-// Rota do cadastro
 
 app.get('/cadastro', (req, res) => {
     res.sendFile(path.join(__dirname, '../pages/TelaCadastro.html'));
