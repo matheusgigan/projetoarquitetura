@@ -3,18 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../assets/css/style.css">
     <title>Login</title>
 </head>
+    <header>
+        <div class="Logo">
+            
+        </div>
+    </header>
 <body>
-    <div> 
-        <h1>Login</h1>
-        <form id="loginForm">
-            <label for="username">Username:</label>
+    <div class="telaLogin">
+        <div class="logo">
+            <img src="../assets/img/ROTINA E LEITURAS.png" alt="Logo" class="logo">
+        </div> 
+        <div class="formulario">
+            <h1>Login</h1>
+            <form id="loginForm">
+            <label for="username">Nome de Usuário:</label>
             <input type="text" id="username" name="username" required><br><br>
-            <label for="password">Password:</label>
+            <label for="password">Senha:</label>
             <input type="password" id="password" name="password" required><br><br>
             <input type="submit" value="Login">
-        </form>
+        </form></div>
+        
+        
         <p>Não tem uma conta? <a href="TelaCadastro.html">Cadastre-se</a></p>
     </div>
     <script src="../assets/js/script.js"></script>
