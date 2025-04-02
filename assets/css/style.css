@@ -1,4 +1,4 @@
-.telaLogin,.telaCadastro {
+.telaLogin,.telaCadastro,.telaPrincipal{
     width: 50%;
     background-color: burlywood;
     margin-left: auto;
@@ -12,7 +12,6 @@
 
 body {
     background-image: url(https://miro.medium.com/v2/resize:fit:2000/1*lAoXzLYaHoONaw4yG91fqA.jpeg);
-  
 }
 
 #loginForm label,#cadastroForm label{
@@ -29,6 +28,6 @@ body {
 }
 
 img{
-    width: 30%;
+    width: 40%;
     height: 30%;
 }
