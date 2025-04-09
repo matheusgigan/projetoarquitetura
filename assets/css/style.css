@@ -33,16 +33,6 @@ img{
     height: 30%;
 }
 
-.botaoEstudo{
-    width: 25%;
-    text-align: left;
-}
+.tela { display: none; }
 
-.botaoLeitura{
-    width: 25%;
-    text-align: right;
-}
-
-.telaCriarRotina div{
-    display: inline-block;
-}
+.ativa { display: block; }
