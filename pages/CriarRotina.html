@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <title>Criar Rotina</title>
+</head>
+<body>
+    <section class="container text-center mt-5">
+        <div class ="telaCriarRotina">
+            <h1>Deseja criar uma rotina para:<br><br></h1>
+            <div class="mb-3">
+                <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#modalEstudo">Estudo</button>
+            </div>
+            <div class="botaoLeitura" >
+                <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#modalLeitura">Leitura</button>
+            </div>
+        </div>
+    </section>
+    <!-- Modal para Estudo -->
+    <div class="modal fade" id="modalEstudo" tabindex="-1" aria-labelledby="modalEstudoLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalEstudoLabel">Rotina de Estudo</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                </div>
+                <div class="modal-body">
+                    Você escolheu criar uma rotina de <b>Estudo</b>. Vamos começar?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                    <button type="button" class="btn btn-primary">Confirmar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para Leitura -->
+    <div class="modal fade" id="modalLeitura" tabindex="-1" aria-labelledby="modalLeituraLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalLeituraLabel">Rotina de Leitura</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                </div>
+                <div class="modal-body">
+                        <form id="cadastroForm" action="/cadastro" method="POST"> 
+                            <label for="username">Nome da Rotina:</label>
+                            <input type="text" id="username" name="username" required><br><br>
+                            <label for="email">Nome do livro:</label>
+                            <input type="email" id="email" name="email" required><br><br>
+                            <label for="password">Meta diária:</label>
+                            <input type="password" id="password" name="password" required><br><br>
+                            <button type="submit" class="submit-btn" id="cadastrar">Cadastrar</button>
+                        </form>
+                    </div>
+                            
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                    <button type="button" class="btn btn-primary">Confirmar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+    <script src="../assets/js/script.js"></script>
+    <script src="../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

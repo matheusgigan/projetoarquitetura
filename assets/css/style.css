@@ -1,4 +1,4 @@
-.telaLogin,.telaCadastro,.telaPrincipal{
+.telaLogin,.telaCadastro,.telaPrincipal,.telaCriarRotina{
     width: 50%;
     background-color: burlywood;
     margin-left: auto;
@@ -31,4 +31,18 @@ body {
 img{
     width: 40%;
     height: 30%;
+}
+
+.botaoEstudo{
+    width: 25%;
+    text-align: left;
+}
+
+.botaoLeitura{
+    width: 25%;
+    text-align: right;
+}
+
+.telaCriarRotina div{
+    display: inline-block;
 }
