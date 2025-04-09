@@ -103,3 +103,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 1000);
     });
 });
+
+function mostrarTela(classe) {
+    // Esconde todas as telas
+    document.querySelectorAll('.tela').forEach(tela => tela.classList.remove('ativa'));
+    
+    // Mostra a tela com a classe especificada
+    document.querySelector(`.${classe}`).classList.add('ativa');
+}
