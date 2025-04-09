@@ -71,3 +71,35 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+
+document.addEventListener('DOMContentLoaded', () => {
+    const rotinaForm = document.getElementById('rotinaForm');
+    const timerDisplay = document.getElementById('timerDisplay');
+    let countdown;
+
+    rotinaForm.addEventListener('submit', (event) => {
+        event.preventDefault(); // Impede o comportamento padrão do formulário
+
+        const hours = parseInt(document.getElementById('hours').value) || 0;
+        const minutes = parseInt(document.getElementById('minutes').value) || 0;
+
+        let totalSeconds = (hours * 3600) + (minutes * 60);
+
+        if (countdown) clearInterval(countdown); // Limpa qualquer contagem anterior
+
+        countdown = setInterval(() => {
+            const hrs = Math.floor(totalSeconds / 3600);
+            const mins = Math.floor((totalSeconds % 3600) / 60);
+            const secs = totalSeconds % 60;
+
+            timerDisplay.textContent = `${hrs.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+
+            if (totalSeconds <= 0) {
+                clearInterval(countdown);
+                alert('Tempo esgotado!');
+            }
+
+            totalSeconds--;
+        }, 1000);
+    });
+});

@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Pomodoro com Rotinas</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
+      margin: 0;
+      padding: 20px;
+    }
+    .tela { display: none; }
+    .ativa { display: block; }
+    .card {
+      background: #fff;
+      border-radius: 10px;
+      padding: 20px;
+      max-width: 400px;
+      margin: auto;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    input, button, select {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+    }
+    .timer {
+      font-size: 48px;
+      text-align: center;
+      margin: 20px 0;
+    }
+    h2, p { text-align: center; }
+  </style>
+</head>
+<body>
+
+  <!-- Tela de Login -->
+  <div id="login" class="tela ativa card">
+    <h2>Entrar</h2>
+    <input type="email" id="email" placeholder="E-mail">
+    <input type="password" id="senha" placeholder="Senha">
+    <button onclick="fazerLogin()">Entrar</button>
+  </div>
+
+  <!-- Tela Inicial -->
+  <div id="inicio" class="tela card">
+    <h2>Minhas Rotinas</h2>
+    <select id="seletorRotina"></select>
+    <button onclick="iniciarRotina()">Iniciar rotina</button>
+    <p id="progresso"></p>
+    <hr>
+    <button onclick="mostrar('novaRotina')">+ Nova rotina</button>
+  </div>
+
+  <!-- Criar nova rotina -->
+  <div id="novaRotina" class="tela card">
+    <h2>Criar nova rotina</h2>
+    <input type="text" id="nomeRotina" placeholder="Nome da rotina">
+    <input type="number" id="tempoRotina" placeholder="Tempo (em minutos)" min="1">
+    <button onclick="salvarRotina()">Salvar</button>
+    <button onclick="mostrar('inicio')">Cancelar</button>
+  </div>
+
+  <!-- Tela Pomodoro -->
+  <div id="pomodoro" class="tela card">
+    <h2 id="tituloPomodoro">Pomodoro</h2>
+    <div class="timer" id="contador">00:00</div>
+    <button onclick="comecarPomodoro()">Começar</button>
+    <button onclick="voltarInicio()">Voltar</button>
+  </div>
+
+  <script>
+    let tempo = 0;
+    let intervalo;
+    let rotinaAtual = null;
+
+    function mostrar(id) {
+      document.querySelectorAll('.tela').forEach(tela => tela.classList.remove('ativa'));
+      document.getElementById(id).classList.add('ativa');
+      if (id === 'inicio') carregarRotinas();
+    }
+
+    function fazerLogin() {
+      let email = document.getElementById("email").value;
+      let senha = document.getElementById("senha").value;
+      if (email && senha) {
+        mostrar("inicio");
+      } else {
+        alert("Preencha e-mail e senha!");
+      }
+    }
+
+    function salvarRotina() {
+      const nome = document.getElementById("nomeRotina").value;
+      const tempo = parseInt(document.getElementById("tempoRotina").value);
+
+      if (!nome || !tempo || tempo < 1) {
+        alert("Preencha nome e tempo válidos.");
+        return;
+      }
+
+      const rotinas = JSON.parse(localStorage.getItem("rotinas") || "[]");
+      rotinas.push({ nome, tempo, progresso: 0 });
+      localStorage.setItem("rotinas", JSON.stringify(rotinas));
+
+      alert("Rotina salva com sucesso!");
+      mostrar("inicio");
+    }
+
+    function carregarRotinas() {
+      const seletor = document.getElementById("seletorRotina");
+      seletor.innerHTML = "";
+      const rotinas = JSON.parse(localStorage.getItem("rotinas") || "[]");
+
+      rotinas.forEach((rotina, index) => {
+        let option = document.createElement("option");
+        option.value = index;
+        option.text = `${rotina.nome} - ${rotina.tempo} min (${rotina.progresso}/30)`;
+        seletor.appendChild(option);
+      });
+
+      atualizarProgresso();
+    }
+
+    function iniciarRotina() {
+      const index = document.getElementById("seletorRotina").value;
+      const rotinas = JSON.parse(localStorage.getItem("rotinas") || "[]");
+      if (!rotinas[index]) {
+        alert("Selecione uma rotina.");
+        return;
+      }
+
+      rotinaAtual = rotinas[index];
+      rotinaAtual.index = index;
+      tempo = rotinaAtual.tempo * 60;
+      atualizarTimer();
+      document.getElementById("tituloPomodoro").innerText = rotinaAtual.nome;
+      mostrar("pomodoro");
+    }
+
+    function comecarPomodoro() {
+      clearInterval(intervalo);
+      intervalo = setInterval(() => {
+        if (tempo > 0) {
+          tempo--;
+          atualizarTimer();
+        } else {
+          clearInterval(intervalo);
+          alert("Pomodoro concluído!");
+          rotinaAtual.progresso++;
+          salvarProgressoRotina();
+          voltarInicio();
+        }
+      }, 1000);
+    }
+
+    function salvarProgressoRotina() {
+      const rotinas = JSON.parse(localStorage.getItem("rotinas") || "[]");
+      rotinas[rotinaAtual.index] = rotinaAtual;
+      localStorage.setItem("rotinas", JSON.stringify(rotinas));
+    }
+
+    function atualizarTimer() {
+      let min = String(Math.floor(tempo / 60)).padStart(2, '0');
+      let seg = String(tempo % 60).padStart(2, '0');
+      document.getElementById("contador").textContent = `${min}:${seg}`;
+    }
+
+    function voltarInicio() {
+      mostrar("inicio");
+    }
+
+    function atualizarProgresso() {
+      const seletor = document.getElementById("seletorRotina");
+      const index = seletor.value;
+      const rotinas = JSON.parse(localStorage.getItem("rotinas") || "[]");
+
+      if (rotinas[index]) {
+        document.getElementById("progresso").textContent = `Progresso: ${rotinas[index].progresso}/30`;
+      } else {
+        document.getElementById("progresso").textContent = "";
+      }
+    }
+  </script>
+
+</body>
+</html>

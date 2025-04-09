@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--   <link rel="stylesheet" href="../assets/css/style.css"> -->
+    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap-grid.css">
+    <script src="../assets/js/script.js"></script>
+    <script src="../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <title>Criar Rotina</title>
+</head>
+<body>
+    <section>
+        <div class="formRotina">
+            <h1>Criar Rotina</h1>
+            <form id="rotinaForm">
+                <label for="text">Nome da rotina:</label>
+                <input type="text" id="rotina" name="rotina" required><br><br>
+                <label for="hours">Horas:</label>
+                <input type="number" id="hours" min="0" max="24" value="0">
+                <label for="minutes">Minutos:</label>
+                <input type="number" id="minutes" min="0" max="59" value="0"><br><br>
+                <button id="startButton">Pronto</button>
+            </form>
+        </div>
+        <div class="timer" id="timerDisplay">00:00:00</div>
+    </section>
+    <!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+    Launch demo modal
+  </button>
+  
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          ...
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
