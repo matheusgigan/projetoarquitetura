@@ -10,11 +10,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-<<<<<<< HEAD
-    "bootstrap": "^5.3.4",
-=======
     "bootstrap": "^5.3.5",
->>>>>>> 090d84b53a902f00436d1b3c10ebec96e0785698
+    "cors": "^2.8.5",
     "express": "^4.21.2",
     "mysql": "^2.18.1",
     "mysql2": "^3.14.0"
