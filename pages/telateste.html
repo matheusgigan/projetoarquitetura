@@ -10,9 +10,6 @@
 <body>
     <!-- Tela de Login -->
     <div class="telaLogin tela ativa">
-        <div class="logo">
-            <img src="../assets/img/ROTINA E LEITURAS.png" alt="Logo" class="logo">
-        </div>
         <div class="formulario">
             <h1>Login</h1>
             <form id="loginForm">
@@ -28,9 +25,6 @@
 
     <!-- Tela de Cadastro -->
     <div class="telaCadastro tela">
-        <div class="logo">
-            <img src="../assets/img/ROTINA E LEITURAS.png" alt="Logo" class="logo">
-        </div>
         <h1>Cadastro</h1>
         <form id="cadastroForm">
             <label for="username">Nome:</label>
@@ -48,7 +42,7 @@
     <div id="inicio" class="telaPrincipal tela card">
         <h2>Minhas Rotinas</h2>
         <select id="seletorRotina"></select>
-        <button id="iniciarRotinaBtn">Iniciar rotina</button>
+        <button id="iniciarRotinaBtn" onclick="mostrarTela('telaPomodoro')">Iniciar rotina</button>
         <p id="progresso"></p>
         <hr>
         <button onclick="mostrarTela('telaCriar')">+ Nova rotina</button>
@@ -64,11 +58,119 @@
     </div>
 
     <!-- Tela de Pomodoro -->
-    <div id="pomodoro" class="tela">
+    <div id="pomodoro" class="telaPomodoro tela">
         <h2 id="tituloPomodoro">Pomodoro</h2>
         <p id="contador">00:00</p>
         <button onclick="comecarPomodoro()">Começar</button>
         <button onclick="voltarInicio()">Voltar</button>
     </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            // Array para armazenar as rotinas
+            const rotinas = [];
+            
+            // Pular diretamente para a tela inicial
+            document.querySelectorAll('.tela').forEach(tela => tela.classList.remove('ativa'));
+            document.querySelector('.telaPrincipal').classList.add('ativa');
+
+            // Função para alternar entre telas
+            window.mostrarTela = (classe) => {
+                document.querySelectorAll('.tela').forEach(tela => tela.classList.remove('ativa'));
+                const telaAtiva = document.querySelector(`.${classe}`);
+                if (telaAtiva) {
+                    telaAtiva.classList.add('ativa');
+                } else {
+                    console.error(`Tela com a classe "${classe}" não encontrada.`);
+                }
+            };
+    
+            // Função para salvar uma nova rotina
+            const salvarRotinaBtn = document.getElementById('salvarRotinaBtn');
+            salvarRotinaBtn.addEventListener('click', () => {
+                const nomeRotina = document.getElementById('nomeRotina').value;
+                const tempoRotina = document.getElementById('tempoRotina').value;
+    
+                if (nomeRotina && tempoRotina) {
+                    // Adiciona a rotina ao array
+                    rotinas.push({ nome: nomeRotina, tempo: tempoRotina });
+    
+                    // Adiciona a rotina ao seletor de rotinas
+                    const seletorRotina = document.getElementById('seletorRotina');
+                    const novaOpcao = document.createElement('option');
+                    novaOpcao.value = nomeRotina;
+                    novaOpcao.textContent = nomeRotina;
+                    seletorRotina.appendChild(novaOpcao);
+    
+                    alert('Rotina criada com sucesso!');
+                    mostrarTela('telaPrincipal');
+                } else {
+                    alert('Preencha todos os campos para criar uma rotina.');
+                }
+            });
+    
+            // Função para iniciar o Pomodoro com base na rotina selecionada
+            const iniciarRotinaBtn = document.getElementById('iniciarRotinaBtn');
+            iniciarRotinaBtn.addEventListener('click', () => {
+                const seletorRotina = document.getElementById('seletorRotina');
+                const rotinaSelecionada = seletorRotina.value;
+    
+                if (rotinaSelecionada) {
+                    const rotina = rotinas.find(r => r.nome === rotinaSelecionada);
+                    if (rotina) {
+                        // Atualiza o título e o tempo do Pomodoro
+                        document.getElementById('tituloPomodoro').textContent = `Pomodoro: ${rotina.nome}`;
+                        document.getElementById('contador').textContent = `${rotina.tempo}:00`;
+    
+                        alert(`Iniciando a rotina: ${rotina.nome}`);
+                        mostrarTela('telaPomodoro');
+                    } else {
+                        alert('Rotina não encontrada.');
+                    }
+                } else {
+                    alert('Por favor, selecione uma rotina antes de iniciar.');
+                }
+            });
+    
+            // Função para voltar à tela principal
+            window.voltarInicio = () => {
+                mostrarTela('telaPrincipal');
+            };
+    
+            // Função para simular o início do Pomodoro
+            window.comecarPomodoro = () => {
+            const contador = document.getElementById('contador');
+            let [minutos, segundos] = contador.textContent.split(':').map(Number);
+
+            const intervalo = setInterval(() => {
+                if (segundos === 0) {
+                    if (minutos === 0) {
+                        clearInterval(intervalo);
+                        alert('Pomodoro concluído!');
+
+                        // Atualiza o progresso na tela principal
+                        const progresso = document.getElementById('progresso');
+                        let progressoAtual = progresso.textContent.match(/\d+/g); // Extrai os números do progresso
+                        let concluidos = progressoAtual ? parseInt(progressoAtual[0]) : 0;
+                        let total = progressoAtual ? parseInt(progressoAtual[1]) : 30; // Supondo 30 como total padrão
+
+                        concluidos++; // Incrementa o número de Pomodoros concluídos
+                        progresso.textContent = `${concluidos}/${total} Pomodoros concluídos`;
+
+                        mostrarTela('telaPrincipal');
+                        return;
+                    }
+                    minutos--;
+                    segundos = 59;
+                } else {
+                    segundos--;
+                }
+
+                // Atualiza o contador no formato MM:SS
+                contador.textContent = `${String(minutos).padStart(2, '0')}:${String(segundos).padStart(2, '0')}`;
+            }, 1000); // Atualiza a cada 1 segundo
+        };
+        });
+    
+    </script>
 </body>
 </html>
