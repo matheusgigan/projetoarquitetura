@@ -53,7 +53,8 @@ app.post('/api/login', (req, res) => {
         }
 
         if (results.length > 0) {
-            res.json({ success: true, message: 'Login realizado com sucesso!' });
+            const usuario_id = results[0].id; // Obtém o ID do usuário autenticado
+            res.json({ success: true, message: 'Login realizado com sucesso!', usuario_id });
         } else {
             res.json({ success: false, message: 'Usuário ou senha inválidos!' });
         }
@@ -80,10 +81,9 @@ app.post('/cadastro', (req, res) => {
 
 // Rota para salvar uma nova rotina
 app.post('/api/rotinas', (req, res) => {
-    const { nome, tempo } = req.body;
-    const usuario_id = 1; // Substitua pelo ID do usuário autenticado
+    const { nome, tempo, usuario_id } = req.body;
 
-    if (!nome || !tempo) {
+    if (!nome || !tempo || !usuario_id) {
         return res.status(400).json({ success: false, message: 'Todos os campos são obrigatórios.' });
     }
 
@@ -99,7 +99,11 @@ app.post('/api/rotinas', (req, res) => {
 
 // Rota para listar todas as rotinas
 app.get('/api/rotinas', (req, res) => {
-    const usuario_id = 1; // Substitua pelo ID do usuário autenticado
+    const usuario_id = req.query.usuario_id; // Obtém o ID do usuário da query string
+
+    if (!usuario_id) {
+        return res.status(400).json({ success: false, message: 'Usuário não especificado.' });
+    }
 
     const sql = 'SELECT * FROM rotinas WHERE usuario_id = ?';
     db.query(sql, [usuario_id], (err, results) => {
@@ -135,7 +139,7 @@ app.put('/api/rotinas/:id', (req, res) => {
     const { id } = req.params;
     const { progresso } = req.body;
 
-    const sql = 'UPDATE rotinas SET progresso = ? WHERE id = ?';
+    const sql = 'UPDATE rotinas SET progresso = progresso + ? WHERE id = ?';
     db.query(sql, [progresso, id], (err, result) => {
         if (err) {
             console.error('Erro ao atualizar o banco de dados:', err);
@@ -144,7 +148,6 @@ app.put('/api/rotinas/:id', (req, res) => {
         res.json({ success: true, message: 'Progresso atualizado com sucesso!' });
     });
 });
-
 // Inicia o servidor
 app.listen(PORT, () => {
     console.log(`Servidor rodando em http://localhost:${PORT}`);

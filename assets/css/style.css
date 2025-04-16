@@ -1,4 +1,4 @@
-.telaLogin,.telaCadastro,.telaPrincipal,.telaCriar{
+.telaLogin,.telaCadastro,.telaPrincipal,.telaCriar,.pomodoro{
     width: 50%;
     background-color: burlywood;
     margin-left: auto;
@@ -36,3 +36,9 @@ img{
 .tela { display: none; }
 
 .ativa { display: block; }
+
+#contador {
+    font-size: 2em;
+    font-weight: bold;
+    margin: 20px 0;
+}
