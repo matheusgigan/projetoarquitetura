@@ -3,16 +3,14 @@ const mysql = require('mysql2');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const path = require('path');
-
 const app = express();
 const PORT = 3000;
 
-// Middleware
 app.use(cors());
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Middleware para servir arquivos estáticos
+// Serve arquivos estáticos
 app.use(express.static(path.join(__dirname, '../pages')));
 app.use('/assets', express.static(path.join(__dirname, '../assets')));
 
@@ -20,8 +18,8 @@ app.use('/assets', express.static(path.join(__dirname, '../assets')));
 const db = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: '1111', // Substitua pela sua senha do MySQL
-    database: 'projeto_db' // Substitua pelo nome correto do banco de dados
+    password: '1111', 
+    database: 'projeto_db' 
 });
 
 db.connect(err => {
@@ -99,7 +97,7 @@ app.post('/api/rotinas', (req, res) => {
 
 // Rota para listar todas as rotinas
 app.get('/api/rotinas', (req, res) => {
-    const usuario_id = req.query.usuario_id; // Obtém o ID do usuário da query string
+    const usuario_id = req.query.usuario_id; 
 
     if (!usuario_id) {
         return res.status(400).json({ success: false, message: 'Usuário não especificado.' });
@@ -148,6 +146,7 @@ app.put('/api/rotinas/:id', (req, res) => {
         res.json({ success: true, message: 'Progresso atualizado com sucesso!' });
     });
 });
+
 // Inicia o servidor
 app.listen(PORT, () => {
     console.log(`Servidor rodando em http://localhost:${PORT}`);
