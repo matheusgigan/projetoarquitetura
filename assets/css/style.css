@@ -1,4 +1,4 @@
-.telaLogin,.telaCadastro,.telaPrincipal,.telaCriar,.pomodoro{
+.telaLogin,.telaCadastro,.telaPrincipal,.telaCriar,.pomodoro,.minhasRotinas,.telaEstatisticas{
     width: 50%;
     background-color: burlywood;
     margin-left: auto;
@@ -41,4 +41,86 @@ img{
     font-size: 2em;
     font-weight: bold;
     margin: 20px 0;
+}
+
+/* Estilo para o contêiner de rotinas */
+.rotinas-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px; /* Espaçamento entre os cards */
+    justify-content: center; /* Centraliza os cards */
+    margin-top: 20px;
+    padding: 10px;
+    max-height: 70vh; /* Limita a altura do contêiner */
+    overflow-y: auto; /* Adiciona barra de rolagem se necessário */
+    box-sizing: border-box;
+}
+
+/* Estilo para os cards */
+.card-rotina {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    width: 300px; /* Define uma largura fixa para os cards */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+/* Título do card */
+.card-rotina h3 {
+    margin: 0 0 10px;
+    font-size: 18px;
+    color: #333;
+}
+
+/* Descrição do card */
+.card-rotina p {
+    margin: 5px 0;
+    font-size: 14px;
+    color: #555;
+}
+
+/* Barra de progresso */
+.progress-bar {
+    background-color: #ddd;
+    border-radius: 5px;
+    overflow: hidden;
+    height: 10px;
+    width: 100%; /* Barra ocupa toda a largura do card */
+    margin-top: 10px;
+}
+
+.progress-bar-inner {
+    height: 100%;
+    background-color: #4caf50;
+    width: 0%; /* Será atualizado dinamicamente */
+    transition: width 0.3s ease;
+}
+
+/* Botão de iniciar rotina */
+.card-rotina button {
+    margin-top: 15px;
+    padding: 10px 20px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.card-rotina button:hover {
+    background-color: #45a049;
+}
+
+/* Ajuste geral para a tela */
+.minhasRotinas {
+    padding: 20px;
+    max-width: 1200px; /* Limita a largura máxima da tela */
+    margin: 0 auto; /* Centraliza a tela */
+    overflow: hidden;
 }

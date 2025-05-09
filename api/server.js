@@ -18,8 +18,8 @@ app.use('/assets', express.static(path.join(__dirname, '../assets')));
 const db = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: '1111', 
-    database: 'projeto_db' 
+    password: '1111',
+    database: 'projeto_db'
 });
 
 db.connect(err => {
@@ -77,58 +77,80 @@ app.post('/cadastro', (req, res) => {
     });
 });
 
-// Rota para salvar uma nova rotina
+// Rota para criar uma nova rotina
 app.post('/api/rotinas', (req, res) => {
-    const { nome, tempo, usuario_id } = req.body;
+    const { nome, tipo, descricao, tempo, pausa, repeticoes, usuario_id } = req.body;
 
-    if (!nome || !tempo || !usuario_id) {
-        return res.status(400).json({ success: false, message: 'Todos os campos são obrigatórios.' });
+    if (!nome || !tipo || !tempo || !pausa || !repeticoes || !usuario_id) {
+        return res.status(400).json({ success: false, message: 'Preencha todos os campos obrigatórios.' });
     }
 
-    const sql = 'INSERT INTO rotinas (usuario_id, nome, tempo, progresso) VALUES (?, ?, ?, 0)';
-    db.query(sql, [usuario_id, nome, tempo], (err, result) => {
+    const query = `
+        INSERT INTO rotinas (nome, tipo, descricao, tempo, pausa, repeticoes, usuario_id)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
+    `;
+    const values = [nome, tipo, descricao, tempo, pausa, repeticoes, usuario_id];
+
+    db.query(query, values, (err, result) => {
         if (err) {
-            console.error('Erro ao inserir no banco de dados:', err);
-            return res.status(500).json({ success: false, message: 'Erro ao salvar rotina. Tente novamente.' });
+            console.error('Erro ao criar rotina:', err);
+            return res.status(500).json({ success: false, message: 'Erro ao criar rotina.' });
         }
-        res.json({ success: true, message: 'Rotina salva com sucesso!' });
+        res.json({ success: true, message: 'Rotina criada com sucesso!' });
     });
 });
 
-// Rota para listar todas as rotinas
+// Rota para listar rotinas
 app.get('/api/rotinas', (req, res) => {
-    const usuario_id = req.query.usuario_id; 
+    const { usuario_id } = req.query;
 
     if (!usuario_id) {
-        return res.status(400).json({ success: false, message: 'Usuário não especificado.' });
+        return res.status(400).json({ success: false, message: 'Usuário não autenticado.' });
     }
 
-    const sql = 'SELECT * FROM rotinas WHERE usuario_id = ?';
-    db.query(sql, [usuario_id], (err, results) => {
+    const query = `
+        SELECT id, nome, tipo, descricao, tempo, pausa, repeticoes, progresso
+        FROM rotinas
+        WHERE usuario_id = ?
+    `;
+
+    db.query(query, [usuario_id], (err, rows) => {
         if (err) {
-            console.error('Erro ao consultar o banco de dados:', err);
-            return res.status(500).json({ success: false, message: 'Erro ao carregar rotinas.' });
+            console.error('Erro ao listar rotinas:', err);
+            return res.status(500).json({ success: false, message: 'Erro ao listar rotinas.' });
         }
-        res.json(results);
+
+        res.json(rows); // Envie apenas as rotinas do usuário autenticado
     });
 });
 
 // Rota para buscar uma rotina específica
+// Rota para buscar uma rotina específica
 app.get('/api/rotinas/:id', (req, res) => {
     const { id } = req.params;
 
-    const sql = 'SELECT * FROM rotinas WHERE id = ?';
-    db.query(sql, [id], (err, results) => {
+    console.log('ID recebido para buscar rotina:', id); // Log para depuração
+
+    const query = `
+        SELECT id, nome, tipo, descricao, tempo, pausa, repeticoes, progresso
+        FROM rotinas
+        WHERE id = ?
+    `;
+
+    db.query(query, [id], (err, results) => {
         if (err) {
-            console.error('Erro ao consultar o banco de dados:', err);
+            console.error('Erro ao buscar rotina:', err);
             return res.status(500).json({ success: false, message: 'Erro ao buscar rotina.' });
         }
 
-        if (results.length > 0) {
-            res.json(results[0]);
-        } else {
-            res.status(404).json({ success: false, message: 'Rotina não encontrada.' });
+        console.log('Resultados da consulta:', results); // Log para depuração
+
+        if (results.length === 0) {
+            console.log('Nenhuma rotina encontrada com o ID:', id); // Log adicional
+            return res.status(404).json({ success: false, message: 'Rotina não encontrada.' });
         }
+
+        res.json(results[0]); // Retorna a rotina encontrada
     });
 });
 

@@ -9,7 +9,7 @@
 </head>
 <body>
     <!-- Tela de Login -->
-    <div class="telaLogin tela ativa">
+    <div class="telaLogin tela ativa ">
         <div class="formulario">
             <h1>Login</h1>
             <form id="loginForm">
@@ -39,29 +39,70 @@
     </div>
 
     <!-- Tela Principal -->
-    <div id="inicio" class="telaPrincipal tela card">
+    <div id="inicio" class="telaPrincipal tela card ">
+        <h2>Inicio</h2>
+        <button id="minhasRotinasBtn" onclick="mostrarTela('minhasRotinas')">Minhas Rotinas</button>
+        <button id="criarRotinaBtn" onclick="mostrarTela('telaCriar')">Criar Rotina</button>
+        <button id="estatisticasBtn" onclick="mostrarTela('telaEstatisticas')">Estatísticas</button>
+    </div>
+
+    <div id="minhasRotinas" class="minhasRotinas tela card">
         <h2>Minhas Rotinas</h2>
-        <select id="seletorRotina"></select>
-        <button id="iniciarRotinaBtn" onclick="mostrarTela('telaPomodoro')">Iniciar rotina</button>
-        <p id="progresso"></p>
+
+        <!-- Campo de busca -->
+        <label for="site-search">Procurar rotina:</label>
+        <input type="search" id="site-search" name="q" placeholder="Digite o nome da rotina" />
+
+        <!-- Filtro por status -->
+        <label for="filtroRotina">Filtrar por status:</label>
+        <select id="filtroRotina">
+            <option value="">Todos</option>
+            <option value="concluido">Concluído</option>
+            <option value="em-andamento">Em andamento</option>
+        </select>
+
+        <!-- Contêiner para os cards -->
+        <div id="rotinasContainer" class="rotinas-container">
+            <!-- Os cards das rotinas serão gerados dinamicamente aqui -->
+        </div>
+
         <hr>
         <button onclick="mostrarTela('telaCriar')">Nova rotina</button>
+        <button onclick="mostrarTela('telaPrincipal')">Voltar</button>
     </div>
       
     <!-- Tela de Criar Nova Rotina -->
-    <div id="novaRotina" class="telaCriar tela">
+    <div id="novaRotina" class="telaCriar tela ">
         <h2>Criar nova rotina</h2>
         <input type="text" id="nomeRotina" placeholder="Nome da rotina">
+        <select id="tipoRotina">
+            <option value="">Escolha o tipo da rotina</option>
+            <option value="estudo">Estudo</option>
+            <option value="trabalho">Trabalho</option>
+            <option value="exercicio">Exercício</option>
+            <option value="lazer">Lazer</option>
+        </select>
+        <input type="text" name="descricaoRotina" id="descricaoRotina" class="descricaoRotina" placeholder="Descrição da rotina" value="">
         <input type="number" id="tempoRotina" placeholder="Tempo (em minutos)" min="1">
+        <input type="number" id="pausaRotina" placeholder="Pausa (em minutos)" min="1">
+        <input type="number" id="repeticoesRotina" placeholder="Repetições" min="1">
         <button id="salvarRotinaBtn">Salvar</button>
         <button onclick="mostrarTela('telaPrincipal')">Cancelar</button>
     </div>
-
+    <!-- Tela de Estatísticas -->
+    <div id="estatisticas" class="telaEstatisticas tela ">
+        <h2>Estatísticas</h2>
+        <p id="tempoTotal">Tempo total: 0 minutos</p>
+        <p id="rotinasConcluidas">Rotinas concluídas: 0</p>
+        <p id="rotinasSemanais">Você completou 85% da rotina essa semana</p>
+        <button onclick="mostrarTela('telaPrincipal')">Voltar</button>
+    </div>
     <!-- Tela do Pomodoro -->
-    <div id="pomodoro" class="pomodoro tela">
+    <div id="pomodoro" class="pomodoro tela ">
         <h2 id="tituloPomodoro">Pomodoro</h2>
         <p id="contador">00:00</p>
         <button id="comecarPomodoroBtn" onclick="comecarPomodoro()">Começar</button>
+        <button id="pausarPomodoroBtn" onclick="pausarPomodoro()">Pausar</button>
         <button onclick="mostrarTela('telaPrincipal')">Voltar</button>
     </div>
 </body>
